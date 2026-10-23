@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Volandia Travel - Tu próximo destino, tu mejor historia.</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="volandiatravelfavicon.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPurple: '#9112d8',
+                        brandViolet: '#5f42f8',
+                        brandBlue: '#516dff',
+                        brandCyan: '#47cbfe',
+                        brandCyanHover: '#2bbbf5',
+                        brandDark: '#120e2e',
+                        brandNavyDark: '#070412',
+                        brandSkyLight: '#f0f4ff',
+                        brandLightBg: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Mobile overflow safeguards */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .sky-hero-bg {
+            background-image: radial-gradient(circle at 50% 20%, rgba(71, 203, 254, 0.12) 0%, transparent 60%),
+                              linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%);
+        }
+
+        .brand-glow {
+            box-shadow: 0 4px 14px 0 rgba(71, 203, 254, 0.4);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Ensure info bubble is strictly fixed in bottom left on mobile */
+        #infoBubbleContainer {
+            position: fixed !important;
+            bottom: 16px !important;
+            left: 16px !important;
+            z-index: 99990 !important;
+        }
+
+        /* Responsive Modal Fix */
+        #infoModal {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-brandLightBg font-sans text-slate-800 antialiased selection:bg-brandCyan selection:text-brandDark relative w-full overflow-x-hidden">
+
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-2 group py-1">
+                    <img src="volandialogo.png" 
+                         alt="Volandia Travel Logo" 
+                         onerror="this.src='https://placehold.co/180x50/120e2e/47cbfe?text=Volandia+Travel'" 
+                         class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105">
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8 items-center text-sm font-semibold text-slate-700">
+                    <a href="#inicio" class="text-brandDark hover:text-brandViolet transition-colors">Inicio</a>
+                    <a href="#buscador" class="hover:text-brandViolet transition-colors">Buscador</a>
+                    <a href="#carrusel-section" class="hover:text-brandViolet transition-colors">Experiencias</a>
+                    <a href="#faq" class="hover:text-brandViolet transition-colors">Preguntas Frecuentes</a>
+                    <a href="#contacto" class="hover:text-brandViolet transition-colors">Contacto</a>
+                </nav>
+
+                
+
+                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden text-brandDark hover:text-brandViolet focus:outline-none p-2" aria-label="Abrir menú">
+                        <i id="menuIcon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+
+    </header>
+
+    <section id="inicio" class="sky-hero-bg text-slate-800 pt-5 pb-6 lg:pt-8 lg:pb-8 border-b border-slate-200/60 w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Compact Title Header -->
+            <div class="text-center max-w-2xl mx-auto mb-4">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/80 border border-slate-200 rounded-full text-brandDark text-xs font-semibold shadow-xs mb-2">
+                    <i class="fa-solid fa-cloud-sun text-brandViolet"></i>
+                    <span>Experiencias inolvidables alrededor del mundo</span>
+                </div>
+                <h1 class="text-xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-brandDark">
+                    Tu próximo destino, <span class="text-brandViolet italic">tu mejor historia.</span>
+                </h1>
+            </div>
+
+            <!-- Compact Search Bar -->
+            <div id="buscador" class="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-3 sm:p-4 text-slate-800 border border-slate-200">
+                <!-- Search Tabs -->
+                <div class="flex overflow-x-auto space-x-1 border-b border-slate-200 pb-2 mb-3 no-scrollbar">
+                    <button onclick="switchSearchTab('alojamientos')" id="tab-alojamientos" class="search-tab flex items-center px-3 py-1.5 rounded-lg font-semibold text-xs transition-all whitespace-nowrap bg-brandDark text-white">
+                        <i class="fa-solid fa-hotel mr-1.5"></i> Alojamientos
+                    </button>
+                    <button onclick="switchSearchTab('vuelos')" id="tab-vuelos" class="search-tab flex items-center px-3 py-1.5 rounded-lg font-semibold text-xs transition-all whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-plane-departure mr-1.5"></i> Vuelos
+                    </button>
+                    <button onclick="switchSearchTab('paquetes')" id="tab-paquetes" class="search-tab flex items-center px-3 py-1.5 rounded-lg font-semibold text-xs transition-all whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-suitcase-rolling mr-1.5"></i> Paquetes
+                    </button>
+                    <button onclick="switchSearchTab('actividades')" id="tab-actividades" class="search-tab flex items-center px-3 py-1.5 rounded-lg font-semibold text-xs transition-all whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <i class="fa-solid fa-compass mr-1.5"></i> Actividades
+                    </button>
+                </div>
+
+                <!-- Form Panel -->
+                <form onsubmit="handleSearch(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+                    <div class="col-span-1">
+                        <label id="lbl-origen" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Origen / Ciudad</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                            <input type="text" placeholder="Ej: Buenos Aires" class="w-full pl-7 pr-2 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs focus:outline-none focus:border-brandDark font-medium">
+                        </div>
+                    </div>
+
+                    <div class="col-span-1">
+                        <label id="lbl-destino" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Destino</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-map-pin absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                            <input type="text" placeholder="Ej: Cancún, México" class="w-full pl-7 pr-2 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs focus:outline-none focus:border-brandDark font-medium">
+                        </div>
+                    </div>
+
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Fechas</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-calendar-days absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                            <input type="text" placeholder="Ida - Vuelta" class="w-full pl-7 pr-2 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs focus:outline-none focus:border-brandDark font-medium">
+                        </div>
+                    </div>
+
+                    <div class="col-span-1 flex flex-col justify-end">
+                        <button type="submit" class="w-full py-2 bg-brandCyan hover:bg-brandCyanHover text-brandDark font-bold rounded-md text-xs transition-all duration-200 flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-magnifying-glass mr-1.5"></i>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="carrusel-section" class="py-6 sm:py-10 bg-white w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <div>
+                    <span class="text-brandViolet uppercase tracking-widest text-[10px] sm:text-[11px] font-bold">Destinos Recomendados</span>
+                    <h2 class="text-xl sm:text-3xl font-serif font-bold text-brandDark">Nuestras Experiencias</h2>
+                </div>
+                
+                <!-- Carousel Navigation Buttons -->
+                <div class="flex space-x-2">
+                    <button onclick="scrollCarousel(-1)" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-brandDark flex items-center justify-center hover:bg-brandDark hover:text-white transition-colors" aria-label="Anterior">
+                        <i class="fa-solid fa-chevron-left text-xs"></i>
+                    </button>
+                    <button onclick="scrollCarousel(1)" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 text-brandDark flex items-center justify-center hover:bg-brandDark hover:text-white transition-colors" aria-label="Siguiente">
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Carousel Cards Container -->
+            <div id="carouselContainer" class="flex space-x-4 overflow-x-auto scroll-smooth no-scrollbar pb-3 pt-1 w-full max-w-full">
+                
+                <!-- Card 1: Playa -->
+                <div class="w-[78vw] sm:w-[280px] md:w-[300px] bg-slate-50 rounded-xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-md transition-all group flex-shrink-0">
+                    <div class="relative h-40 sm:h-48 overflow-hidden">
+                        <img src="playa.png" 
+                             alt="Playas Paradisíacas" 
+                             onerror="this.src='https://placehold.co/600x400/eef6ff/120e2e?text=Playas+Paradisíacas'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 left-2.5 bg-brandDark/90 text-brandCyan text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded backdrop-blur-xs">
+                            Caribe & Sol
+                        </span>
+                    </div>
+                    <div class="p-3.5">
+                        <h3 class="text-base font-bold text-brandDark mb-1">Playas Paradisíacas</h3>
+                        <p class="text-slate-600 text-xs mb-2.5 line-clamp-2">Desconéctate en aguas cristalinas y arenas blancas con resorts todo incluido de primer nivel.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+                            <span class="text-xs font-bold text-brandViolet">Desde USD $890</span>
+                            <a href="#contacto" class="text-brandDark font-semibold text-xs hover:text-brandViolet transition-colors flex items-center">
+                                Ver Más <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Hotel -->
+                <div class="w-[78vw] sm:w-[280px] md:w-[300px] bg-slate-50 rounded-xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-md transition-all group flex-shrink-0">
+                    <div class="relative h-40 sm:h-48 overflow-hidden">
+                        <img src="hotel.png" 
+                             alt="Hoteles boutique" 
+                             onerror="this.src='https://placehold.co/600x400/eef6ff/120e2e?text=Hoteles+Exclusivos'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 left-2.5 bg-brandDark/90 text-brandCyan text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded backdrop-blur-xs">
+                            Estadía Luxury
+                        </span>
+                    </div>
+                    <div class="p-3.5">
+                        <h3 class="text-base font-bold text-brandDark mb-1">Hoteles Boutique & Luxury</h3>
+                        <p class="text-slate-600 text-xs mb-2.5 line-clamp-2">Estadías seleccionadas para garantizarte máximo confort, atención personalizada y vistas únicas.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+                            <span class="text-xs font-bold text-brandViolet">Tarifas especiales</span>
+                            <a href="#contacto" class="text-brandDark font-semibold text-xs hover:text-brandViolet transition-colors flex items-center">
+                                Ver Más <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Buceo -->
+                <div class="w-[78vw] sm:w-[280px] md:w-[300px] bg-slate-50 rounded-xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-md transition-all group flex-shrink-0">
+                    <div class="relative h-40 sm:h-48 overflow-hidden">
+                        <img src="buceo.png" 
+                             alt="Buceo" 
+                             onerror="this.src='https://placehold.co/600x400/eef6ff/120e2e?text=Aventura+y+Buceo'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 left-2.5 bg-brandDark/90 text-brandCyan text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded backdrop-blur-xs">
+                            Aventura
+                        </span>
+                    </div>
+                    <div class="p-3.5">
+                        <h3 class="text-base font-bold text-brandDark mb-1">Buceo & Vida Marina</h3>
+                        <p class="text-slate-600 text-xs mb-2.5 line-clamp-2">Sumérgete en los arrecifes de coral más asombrosos del planeta con guías certificados.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+                            <span class="text-xs font-bold text-brandViolet">Guiado por expertos</span>
+                            <a href="#contacto" class="text-brandDark font-semibold text-xs hover:text-brandViolet transition-colors flex items-center">
+                                Ver Más <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Experiencias -->
+                <div class="w-[78vw] sm:w-[280px] md:w-[300px] bg-slate-50 rounded-xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-md transition-all group flex-shrink-0">
+                    <div class="relative h-40 sm:h-48 overflow-hidden">
+                        <img src="experiencias.jpg" 
+                             alt="Experiencias" 
+                             onerror="this.src='https://placehold.co/600x400/eef6ff/120e2e?text=Experiencias+Culturales'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 left-2.5 bg-brandDark/90 text-brandCyan text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded backdrop-blur-xs">
+                            Cultura & Gastronomía
+                        </span>
+                    </div>
+                    <div class="p-3.5">
+                        <h3 class="text-base font-bold text-brandDark mb-1">Experiencias Inmersivas</h3>
+                        <p class="text-slate-600 text-xs mb-2.5 line-clamp-2">Conecta con la cultura local, la gastronomía tradicional y los paisajes icónicos de cada región.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+                            <span class="text-xs font-bold text-brandViolet">A tu medida</span>
+                            <a href="#contacto" class="text-brandDark font-semibold text-xs hover:text-brandViolet transition-colors flex items-center">
+                                Ver Más <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-10 sm:py-16 bg-slate-50 border-t border-b border-slate-200 w-full overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <span class="text-brandViolet uppercase tracking-widest text-xs font-bold">Resuelve tus dudas</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-brandDark mt-1">Preguntas Frecuentes</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1">Todo lo que necesitas saber antes de planificar tu viaje con Volandia Travel.</p>
+            </div>
+
+            <!-- Accordion Items (16 Questions) -->
+            <div class="space-y-2.5">
+                
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">1. ¿Hay opciones para viajeros solos?</span>
+                        <i id="faq-icon-1" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-1" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Sí, ofrecemos viajes grupales y paquetes diseñados para viajeros solos que quieran conocer gente nueva.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">2. ¿Cómo puedo contactarlos durante mi viaje?</span>
+                        <i id="faq-icon-2" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-2" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Puedes contactarnos por WhatsApp o correo electrónico 24/7. Estamos disponibles para ayudarte en cualquier momento.<br>
+                        <strong>Correo:</strong> <a href="mailto:soporte@Volandia.com" class="text-brandViolet font-bold hover:underline">soporte@Volandia.com</a>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">3. ¿Es seguro viajar? ¿Qué pasa si tengo un problema durante el viaje?</span>
+                        <i id="faq-icon-3" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-3" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        No importa el destino que elijas, todos nuestros destinos son seguros. Te brindamos recomendaciones específicas para cada lugar y te asesoramos sobre precauciones adicionales. En Volandia Travel , te brindamos soporte 24/7 durante todo tu viaje. Puedes contactarnos en cualquier momento para resolver inconvenientes o recibir asistencia.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(4)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">4. ¿Cuánto equipaje está permitido según la aerolínea?</span>
+                        <i id="faq-icon-4" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-4" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1">
+                        <p><strong>• Equipaje de Mano:</strong> Varía según la aerolínea, pero generalmente permite una maleta de hasta 10 kg y una mochila pequeña.</p>
+                        <p><strong>• Equipaje Facturado:</strong> Depende de la clase y la aerolínea. Suele ser de 23 kg en clase económica y 32 kg en clase ejecutiva.</p>
+                        <p><strong>• Recomendación:</strong> Verifica las políticas de equipaje de tu aerolínea antes de viajar y la tarifa que compraste para saber qué tipo de valija compraste.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(5)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">5. ¿Puedo personalizar mi itinerario?</span>
+                        <i id="faq-icon-5" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-5" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        ¡Claro! Ofrecemos opciones personalizadas para que agregues o quites actividades según tus preferencias.
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(6)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">6. ¿Qué documentos se necesitan para viajar?</span>
+                        <i id="faq-icon-6" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-6" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1">
+                        <p><strong>• Pasaporte:</strong> Válido con al menos 6 meses de vigencia desde la fecha de regreso.</p>
+                        <p><strong>• Visa:</strong> Dependiendo del destino, puede ser requerida. Te asesoramos en el proceso.</p>
+                        <p><strong>• Vacunas:</strong> Algunos países exigen certificados de vacunación (ej: fiebre amarilla).</p>
+                        <p><strong>• Seguro de Viaje:</strong> Obligatorio en ciertos destinos. Te ayudamos a contratarlo.</p>
+                        <p><strong>• Otros:</strong> Tarjeta de embarque, reservas de hoteles y documentos adicionales según el destino.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(7)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">7. ¿Qué productos y servicios ofrece Volandia Travel para viajeros?</span>
+                        <i id="faq-icon-7" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-7" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Brindamos una amplia variedad de opciones para todo tipo de viajeros. Ofrecemos paquetes turísticos con itinerarios completos a destinos internacionales como Turquía, Dubai, Islas Griegas y nacionales como Ushuaia o Bariloche. También diseñamos viajes a medida según tus intereses, viajes grupales, excursiones, tours y cruceros. Además, gestionamos vuelos nacionales e internacionales, buses de larga distancia y viajes en barco. Te acompañamos desde la planificación hasta tu vuelta, para que cada viaje sea único.
+                    </div>
+                </div>
+
+                <!-- FAQ 8 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(8)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">8. ¿Quiénes somos? / ¿Qué es Volandia Travel?</span>
+                        <i id="faq-icon-8" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-8" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Volandia Travel es una empresa pionera en la organización de salidas grupales que fortalecen las relaciones humanas. Con más de 15 años de experiencia, nacimos en Lomas del Mirador con el objetivo de ofrecer paquetes turísticos completos para que nuestros viajeros solo se preocupen por disfrutar al máximo. Nos destacamos por descubrir destinos fascinantes y únicos alrededor del mundo, diseñando paquetes personalizados que transforman la vida de las personas. Ya sea explorar paisajes impresionantes, sumergirse en culturas milenarias o vivir emocionantes aventuras, en Volandia Travel encontrarás la experiencia perfecta para ti. Creemos en el poder transformador de los viajes, creando momentos inolvidables que generan recuerdos duraderos. ¡Únete a la comunidad de #Volandia Travel y hagamos realidad tu próximo destino! Viajemos juntos, compartamos risas, aventuras y experiencias que nos enriquecerán de por vida. ✈
+                    </div>
+                </div>
+
+                <!-- FAQ 9 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(9)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">9. ¿Cuáles son nuestras redes sociales?</span>
+                        <i id="faq-icon-9" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-9" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1">
+                        <p><strong>• Instagram:</strong> <a href="https://www.instagram.com/Volandia.ok" target="_blank" class="text-brandViolet font-bold hover:underline">@Volandia.ok</a></p>
+                        <p><strong>• Facebook:</strong> <a href="https://www.facebook.com/Volandia.ok" target="_blank" class="text-brandViolet font-bold hover:underline">/Volandia.ok</a></p>
+                    </div>
+                </div>
+
+                <!-- FAQ 10 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(10)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">10. ¿Dónde estamos ubicados?</span>
+                        <i id="faq-icon-10" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-10" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        <strong>Dirección:</strong> Buenos Aires 412, Piso 11, Puerto madero, BS AS.<br>
+                        <strong>Horarios de atención:</strong> Lunes a viernes de 10 a 18 hs.
+                    </div>
+                </div>
+
+                <!-- FAQ 11 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(11)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">11. ¿Por qué elegir Volandia Travel?</span>
+                        <i id="faq-icon-11" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-11" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1.5">
+                        <p><strong>• Experiencia:</strong> Más de 15 años en el mercado, con miles de viajeros satisfechos.</p>
+                        <p><strong>• Personalización:</strong> Diseñamos cada viaje según tus necesidades y deseos.</p>
+                        <p><strong>• Calidad:</strong> Trabajamos con los mejores proveedores para garantizar una experiencia premium.</p>
+                        <p><strong>• Soporte:</strong> Atención personalizada antes, durante y después del viaje.</p>
+                        <p class="pt-1">Brindamos experiencias Personalizadas, Atención al Cliente 24/7, Exclusividad en Paquetes, Transparencia y Confianza, Experiencias Memorables. Volandia Travel no es solo una agencia de viajes, es tu aliado para descubrir el mundo de una manera única, personalizada y memorable. ¿Listo para vivir la experiencia Volandia Travel?</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 12 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(12)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">12. ¿Puedo viajar con niños?</span>
+                        <i id="faq-icon-12" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-12" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Sí, ofrecemos paquetes familiares con actividades y alojamientos adecuados para niños. También te asesoramos sobre los requisitos de documentación para menores.
+                    </div>
+                </div>
+
+                <!-- FAQ 13 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(13)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">13. ¿Qué documentos necesito para viajar con menores?</span>
+                        <i id="faq-icon-13" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-13" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1">
+                        <p>Depende del destino, pero generalmente se requiere:</p>
+                        <p>• Pasaporte válido del menor.</p>
+                        <p>• Autorización de viaje firmada por ambos padres (si viaja con un solo padre o un tercero).</p>
+                        <p>• Copia del DNI de los padres.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 14 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(14)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">14. ¿Qué pasa si pierdo mi vuelo o mi equipaje?</span>
+                        <i id="faq-icon-14" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-14" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Te brindamos asistencia inmediata para reprogramar vuelos o gestionar la búsqueda de equipaje. Además, recomendamos contratar un seguro de viaje que cubra estos imprevistos.
+                    </div>
+                </div>
+
+                <!-- FAQ 15 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(15)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">15. ¿Cómo elijo el paquete adecuado para mí?</span>
+                        <i id="faq-icon-15" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-15" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50">
+                        Nuestros asesores están disponibles para guiarte en la elección del paquete que mejor se adapte a tus intereses, presupuesto y estilo de viaje.
+                    </div>
+                </div>
+
+                <!-- FAQ 16 -->
+                <div class="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+                    <button onclick="toggleFaq(16)" class="w-full px-4 py-3.5 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors">
+                        <span class="font-bold text-brandDark text-xs sm:text-sm">16. ¿Cuáles son las formas de pago?</span>
+                        <i id="faq-icon-16" class="fa-solid fa-chevron-down text-brandViolet transition-transform duration-300 text-xs ml-2"></i>
+                    </button>
+                    <div id="faq-content-16" class="hidden px-4 pb-3.5 text-slate-600 text-xs leading-relaxed border-t border-slate-100 pt-2.5 bg-slate-50/50 space-y-1.5">
+                        <p><strong>• Paquetes dentro de Argentina:</strong> Efectivo, tarjetas de débito, transferencias y tarjetas de crédito. Además podés financiar tu viaje en 12 cuotas con Visa.</p>
+                        <p><strong>• Paquetes fuera de Argentina:</strong> Pesos argentinos, dólares americanos, tarjeta de débito, transferencias o tarjetas de crédito en 1 pago.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto" class="bg-brandDark text-white pt-10 pb-8 border-t border-slate-800 w-full overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Col 1: Brand -->
+                <div class="md:col-span-1">
+                    <div class="bg-white/10 p-2 rounded-lg inline-block mb-3">
+                        <img src="volandialogo.png" 
+                             alt="Volandia Travel Logo" 
+                             onerror="this.src='https://placehold.co/180x50/ffffff/120e2e?text=Volandia+Travel'" 
+                             class="h-8 w-auto object-contain">
+                    </div>
+                    <p class="text-slate-300 text-xs italic mb-3">Tu próximo destino, tu mejor historia.</p>
+                    <div class="flex space-x-2 text-slate-300">
+                        <a href="https://www.instagram.com/Volandia.ok" target="_blank" class="w-8 h-8 bg-white/10 hover:bg-brandCyan hover:text-brandDark rounded-full flex items-center justify-center transition-colors text-xs">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/Volandia.ok" target="_blank" class="w-8 h-8 bg-white/10 hover:bg-brandCyan hover:text-brandDark rounded-full flex items-center justify-center transition-colors text-xs">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-brandCyan font-bold text-xs uppercase tracking-wider mb-2.5">Navegación</h4>
+                    <ul class="space-y-1.5 text-xs text-slate-300">
+                        <li><a href="#inicio" class="hover:text-white transition-colors">Inicio</a></li>
+                        <li><a href="#buscador" class="hover:text-white transition-colors">Buscador</a></li>
+                        <li><a href="#carrusel-section" class="hover:text-white transition-colors">Experiencias</a></li>
+                        <li><a href="#faq" class="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Services -->
+                <div>
+                    <h4 class="text-brandCyan font-bold text-xs uppercase tracking-wider mb-2.5">Servicios</h4>
+                    <ul class="space-y-1.5 text-xs text-slate-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Vuelos Internacionales</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hoteles & Resorts</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Paquetes Turísticos</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Asistencia al Viajero</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-brandCyan font-bold text-xs uppercase tracking-wider mb-2.5">Contacto</h4>
+                    <ul class="space-y-2 text-xs text-slate-300">
+                        <li class="flex items-center"><i class="fa-solid fa-envelope mr-2 text-brandCyan"></i> soporte@Volandia.com</li>
+                       
+                        <li class="flex items-center"><i class="fa-solid fa-location-dot mr-2 text-brandCyan"></i> Buenos Aires 412, Piso 11, Puerto Madero</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-5 border-t border-white/10 text-center text-slate-400 text-[11px]">
+                <p>&copy; <span id="currentYear"></span> OnnIA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FIXED INFERIOR-LEFT FLOATING INFO BUBBLE -->
+    <div id="infoBubbleContainer">
+        <!-- Floating Info Trigger Button -->
+        <button onclick="toggleInfoModal()" class="w-12 h-12 rounded-full bg-brandDark text-brandCyan shadow-2xl border-2 border-brandCyan flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200 group focus:outline-none" aria-label="Información de prueba">
+            <i class="fa-solid fa-info text-lg group-hover:rotate-12 transition-transform"></i>
+        </button>
+
+        <!-- Floating Modal -->
+        <div id="infoModal" class="hidden absolute bottom-14 left-0 w-[85vw] sm:w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 text-slate-800 text-xs z-50">
+            <div class="flex justify-between items-center pb-2 mb-2.5 border-b border-slate-100">
+                <h3 class="font-bold text-brandDark flex items-center text-xs sm:text-sm">
+                    <i class="fa-solid fa-robot text-brandCyan mr-1.5 text-sm"></i> Demo Volandia Webchat
+                </h3>
+                <button onclick="toggleInfoModal()" class="text-slate-400 hover:text-slate-700 font-bold p-1 focus:outline-none">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <p class="text-slate-600 mb-2 leading-relaxed text-[11px] sm:text-xs">
+                Esta es una <strong>web de prueba de OnnIA</strong> para probar un webchat con un bot entrenado con un modelo de IA para agencias de viajes.
+            </p>
+            <p class="text-slate-600 mb-3 leading-relaxed text-[11px] sm:text-xs">
+                El modelo se puede personalizar con los flujos, procesos y productos de tu empresa.
+            </p>
+
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <p class="font-bold text-brandDark mb-2 text-[10px] uppercase tracking-wider">Sugerencias de preguntas para el Bot:</p>
+                <div class="space-y-1.5 text-[11px]">
+                    <button onclick="copyQuestion('¿Dónde se encuentran?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Dónde se encuentran?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('¿Cuál es la mejor época para viajar a miami?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Cuál es la mejor época para viajar a miami?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('¿Cuáles son las formas de pago?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Cuáles son las formas de pago?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('Quiero armar un circuito en destino.')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">Quiero armar un circuito en destino.</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('¿Qué paquetes tenés disponibles para enero 2027?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Qué paquetes tenés disponibles para enero 2027?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('¿Hay asistencia en destino?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Hay asistencia en destino?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                    <button onclick="copyQuestion('¿Me arman un viaje a medida?')" class="w-full text-left p-1.5 bg-white rounded border border-slate-200 hover:border-brandCyan transition-colors flex justify-between items-center group">
+                        <span class="text-slate-700 group-hover:text-brandDark">¿Me arman un viaje a medida?</span>
+                        <i class="fa-regular fa-copy text-slate-400 text-[10px] group-hover:text-brandCyan"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Toggle Mobile Navigation Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            if(menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-xl';
+            }
+        }
+
+        // Toggle Info Commercial Modal
+        function toggleInfoModal() {
+            const modal = document.getElementById('infoModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Copy question helper
+        function copyQuestion(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+            }
+
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed bottom-20 left-4 bg-brandDark text-white px-3 py-2 rounded-lg shadow-xl z-50 text-xs border-l-4 border-brandCyan flex items-center space-x-2';
+            alertBox.innerHTML = `<i class="fa-solid fa-check text-brandCyan"></i><span>Pregunta copiada al portapapeles</span>`;
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.remove(), 2500);
+        }
+
+        // Search Tabs Logic
+        function switchSearchTab(type) {
+            const tabs = document.querySelectorAll('.search-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-brandDark', 'text-white');
+                tab.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            const activeTab = document.getElementById(`tab-${type}`);
+            if(activeTab) {
+                activeTab.classList.remove('bg-slate-100', 'text-slate-600');
+                activeTab.classList.add('bg-brandDark', 'text-white');
+            }
+
+            const lblOrigen = document.getElementById('lbl-origen');
+            const lblDestino = document.getElementById('lbl-destino');
+
+            if(type === 'alojamientos') {
+                lblOrigen.textContent = 'Ciudad o zona';
+                lblDestino.textContent = 'Hotel / Resort';
+            } else if(type === 'vuelos') {
+                lblOrigen.textContent = 'Origen';
+                lblDestino.textContent = 'Destino';
+            } else if(type === 'paquetes') {
+                lblOrigen.textContent = 'Origen';
+                lblDestino.textContent = 'Destino turístico';
+            } else if(type === 'actividades') {
+                lblOrigen.textContent = 'Ubicación';
+                lblDestino.textContent = 'Tipo de Actividad';
+            }
+        }
+
+        // Handle Search Form
+        function handleSearch(event) {
+            event.preventDefault();
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-5 right-5 bg-brandDark text-white px-4 py-3 rounded-lg shadow-xl z-50 border-l-4 border-brandCyan text-xs font-semibold flex items-center space-x-2';
+            alertBox.innerHTML = '<i class="fa-solid fa-circle-check text-brandCyan text-base"></i><span>Buscando las mejores ofertas...</span>';
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.remove(), 3000);
+        }
+
+        // Carousel Scroll
+        function scrollCarousel(direction) {
+            const container = document.getElementById('carouselContainer');
+            const scrollAmount = window.innerWidth < 640 ? 250 : 310;
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+    </script>
+
+    <!-- Script de Chat de Volandia Travel obligatorio -->
+<script src="https://widget.onnia.ai/onnia-widget.js?token=v1.E-JAXnZs0BoZwWQe9vqC_Ve38P_7U8J6MAnztuoh_KCJXvPnkTJlp_8083UXiBzGZtxwgEJ77QXhjRIIniOY8nQ05cJtG7lxYh7J40WJc6ogBzkh0E1AVQePagB9Kn2yLXXkDiczCrToJXhx6Bvq8YvgiuHNz2aw7NtvsPVp9rgMYFX9rkYBOxf5CHeeZX5Mx5I3v_ctqqVr_p6xrdLouVRGF4ErhttsDjDlCm7ZU8cFTdGbRedoo4Q3JacWoRMbjUZw2H_hhhmgMU9mR5yPNOgULvBKCtAzuom_rwpKE3vlD6jjwzQU4P8Hno3pAjFAOaYHxVp_sUPlfVtga7tSw9_azi2UsG4uFEJy9Z-iaA7vAP_TfR7eWw19j_6R3U3mdrFwzeI8E_wK-avV4bgnE-FU7IVQ6aCRbu2K0wfXxKELJcYHZg_z_jA7X8P3Vl8qFDvbhCNVVckPN8gwKNrK8uApsn6_YlJxh_h3wYX2Y5Y_5naxbzRPVPP7LE7fBs9OEmoOHrNf1vKC4XXdt805GDW3vA"></script>
+</body>
+</html>
